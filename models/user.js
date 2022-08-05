@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Schema, model } = mongoose;
+// const Workout = require('./workouts');
 
 const validator = require('validator');
 
@@ -36,6 +37,15 @@ const userSchema = new Schema({
 	},
 });
 
+userSchema.virtual('workouts', {
+	ref: 'Workout',
+	localField: '_id',
+	foreignField: 'owner',
+});
+
+userSchema.set('toObject', { virtuals: true });
+userSchema.set('toJSON', { virtuals: true });
+
 userSchema.statics.authenticateUser = async function (email, password) {
 	const user = await User.findOne({ email });
 
@@ -54,6 +64,10 @@ userSchema.methods.generateToken = async function (id, email) {
 		{ _id: id, email: email },
 		process.env.SECRET_TOKEN
 	);
+	user = this;
+	user.token = token;
+	await user.save();
+
 	return token;
 };
 
