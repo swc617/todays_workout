@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const Routine = require('./routine');
 // const , User } = require('./user');
 
 const workoutSchema = new Schema(
 	{
 		owner: {
-			type: Schema.Types.ObjectId,
-			reuired: true,
-			ref: 'User',
+			type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+			required: true,
 		},
 		name: {
 			type: String,
@@ -19,26 +19,17 @@ const workoutSchema = new Schema(
 			type: String,
 			enum: ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'],
 		},
-		exercises: [
-			{
-				routine: {
-					name: {
-						type: String,
-					},
-					sets: {
-						type: Number,
-					},
-					reps: {
-						type: Number,
-					},
-				},
-			},
-		],
+		exercises: [Routine.schema],
 	},
 	{
 		timestamps: true,
 	}
 );
+
+// workoutSchema.pre('save', async function (next) {
+// 	const workout = this;
+// 	next();
+// });
 
 const Workout = model('Workout', workoutSchema);
 
