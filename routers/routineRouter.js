@@ -4,7 +4,7 @@ const Workout = require('../models/workouts');
 const Routine = require('../models/routine');
 const auth = require('../middleware/auth');
 
-// get all routines not specific to user
+// TEST purpose - get all routines not specific to user
 router.get('/allroutines', async (req, res) => {
 	try {
 		const workouts = await Workout.find({}, 'exercises');
@@ -19,6 +19,7 @@ router.get('/allroutines', async (req, res) => {
 	}
 });
 
+// IMAGE
 // get specific workout
 router.get('/routines/:workoutId', auth, async (req, res) => {
 	try {
@@ -146,7 +147,7 @@ router.delete('/routines/:workoutId/:routineId', auth, async (req, res) => {
 		}
 		const result = workout.exercises.id(req.params.routineId).remove();
 		await workout.save();
-		res.send(result);
+		res.send('routine deleted');
 	} catch (e) {
 		console.log(e);
 		res.status(500).send();

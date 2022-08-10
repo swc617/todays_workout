@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 
+// TEST purpose - get all users
 router.get('/users', async (req, res) => {
 	try {
 		const users = await User.find({});

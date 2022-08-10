@@ -7,6 +7,7 @@ const workoutRouter = require('./routers/workoutRouter');
 const routineRouter = require('./routers/routineRouter');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(userRouter);
 app.use(workoutRouter);

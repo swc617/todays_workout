@@ -19,6 +19,9 @@ const workoutSchema = new Schema(
 			type: String,
 			enum: ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'],
 		},
+		todaysimage: {
+			type: Buffer,
+		},
 		exercises: [Routine.schema],
 	},
 	{

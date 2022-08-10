@@ -1,0 +1,17 @@
+{
+	"name": "legs-2",
+	"notes": "brace core",
+	"dayofweek": "TUES",
+	"exercises": [
+		{
+			"name": "Squats",
+			"sets": 5,
+			"reps": 5
+		},
+		{
+			"name": "Leg Extensions",
+			"sets": 3,
+			"reps": 12
+		}
+	]
+}
