@@ -15,27 +15,7 @@ router.get('/allroutines', async (req, res) => {
 		res.send(allRoutines);
 	} catch (e) {
 		console.log(e);
-		res.status(400).send();
-	}
-});
-
-// IMAGE
-// get specific workout
-router.get('/routines/:workoutId', auth, async (req, res) => {
-	try {
-		// console.log(req.params);
-		const workout = await Workout.findOne({
-			_id: req.params.workoutId,
-			owner: req.user._id,
-		});
-		if (!workout) {
-			res.send('No Workout!');
-		} else {
-			res.send(workout);
-		}
-	} catch (e) {
-		console.log(e);
-		res.status(400).send();
+		res.status(404).send();
 	}
 });
 
@@ -47,13 +27,13 @@ router.get('/routines/:workoutId/:routineId', auth, async (req, res) => {
 			owner: req.user._id,
 		});
 		if (!workout) {
-			res.send('No Workout!');
+			return res.send('No Workout!');
 		}
 		const exercises = workout.exercises.id(req.params.routineId);
 		res.send(exercises);
 	} catch (e) {
 		console.log(e);
-		res.status(400).send();
+		res.status(404).send();
 	}
 });
 
@@ -65,7 +45,7 @@ router.post('/routines/:workoutId', auth, async (req, res) => {
 			owner: req.user._id,
 		});
 		if (!workout) {
-			res.send('No Workout!');
+			return res.send('No Workout!');
 		}
 		const routine = new Routine(req.body);
 		workout.exercises.push(routine);
@@ -104,11 +84,6 @@ router.patch('/routines/:workoutId/:routineId', auth, async (req, res) => {
 			},
 			{ returnDocument: 'after' }
 		);
-
-		// var exercise = workout.exercises.id(req.params.routineId);
-		// exercise.name = req.body.name;
-		// exercise.name = req.body.name;
-		// exercise.name = req.body.name;
 		res.send(workout);
 	} catch (e) {
 		console.log(e);
@@ -143,7 +118,7 @@ router.delete('/routines/:workoutId/:routineId', auth, async (req, res) => {
 			owner: req.user._id,
 		});
 		if (!workout) {
-			res.send('No Workout!');
+			return res.send('No Workout!');
 		}
 		const result = workout.exercises.id(req.params.routineId).remove();
 		await workout.save();

@@ -14,10 +14,12 @@ router.get('/users', async (req, res) => {
 	}
 });
 
+// create new user
 router.post('/users/register', async (req, res) => {
 	try {
 		const user = new User(req.body);
 		await user.save();
+
 		res.status(201).send(user);
 	} catch (e) {
 		console.log(e);
@@ -25,6 +27,7 @@ router.post('/users/register', async (req, res) => {
 	}
 });
 
+// login user
 router.post('/users/login', async (req, res) => {
 	try {
 		const user = await User.authenticateUser(
@@ -32,56 +35,81 @@ router.post('/users/login', async (req, res) => {
 			req.body.password
 		);
 		const token = await user.generateToken(user._id, user.email);
+		// res.send({ user, token });
 		res.send(user);
 	} catch (e) {
-		res.status(400).send();
+		res.status(401).send();
 	}
 });
 
+// logout user
 router.post('/users/logout', auth, async (req, res) => {
 	try {
 		req.user.token = '';
 		await req.user.save();
 		res.send('Logout Successful');
 	} catch (e) {
-		res.status(400).send(e);
+		res.status(404).send(e);
 	}
 });
 
+// get user profile
 router.get('/users/profile/me', auth, async (req, res) => {
 	try {
 		var user = req.user;
 		res.send(user);
 	} catch (e) {
 		console.log(e);
-		res.status(400).send(e);
+		res.status(404).send(e);
 	}
 });
 
+// update user name
 router.patch('/users/profile/me', auth, async (req, res) => {
 	try {
-		if (!Object.keys(req.body).includes('name')) {
-			res.send('User can only update name');
+		const updateKeys = ['name', 'age', 'weight', 'height'];
+		const isValid = Object.keys(req.body).every((key) =>
+			updateKeys.includes(key)
+		);
+
+		if (!isValid) {
+			return res.status(400).send('Invalid Key');
 		}
+
 		const result = await User.findOneAndUpdate(
 			{ _id: req.user._id },
-			{ name: req.body.name },
-			{ returnDocument: 'after' }
+			{ ...req.body }
 		);
+
+		// to update bmi using middleware
+		var user = await User.findOne({ _id: req.user._id });
+		await user.save();
+		res.send(user);
+	} catch (e) {
+		console.log(e);
+		res.status(500).send();
+	}
+});
+
+// delete user by id and cascade delete workouts
+router.delete('/users/profile/me', auth, async (req, res) => {
+	try {
+		const result = await User.findOneAndDelete({ _id: req.user._id });
 		res.send(result);
 	} catch (e) {
 		console.log(e);
-		res.status(400).send();
+		res.status(500).send();
 	}
 });
 
+// delete all users
 router.delete('/users', async (req, res) => {
 	try {
 		const result = await User.deleteMany({});
 		res.send('delete count: ' + result.deletedCount);
 	} catch (e) {
 		console.log(e);
-		res.send(e);
+		res.status(500).send(e);
 	}
 });
 
