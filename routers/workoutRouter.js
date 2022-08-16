@@ -6,20 +6,6 @@ const auth = require('../middleware/auth');
 const multer = require('multer');
 const sharp = require('sharp');
 
-// TEST purpose - getting all tasks. not specific to user
-router.get('/workouts', async (req, res) => {
-	try {
-		const workouts = await Workout.find({});
-		if (workouts.length === 0) {
-			res.send('no workouts');
-		}
-		res.send(workouts);
-	} catch (e) {
-		console.log(e);
-		res.status(400).send();
-	}
-});
-
 // getting all or query of user's workout
 // GET/ /workouts/me?date_start=2022-01-01&date_end=2022-05-31
 // GET/ /workouts/me?name=deadlift
@@ -41,8 +27,8 @@ router.get('/workouts/me', auth, async (req, res) => {
 	}
 	if (req.query.date_start && req.query.date_end) {
 		match.date = {
-			$gte: new Date(date_start),
-			$lte: new Date(date_end),
+			$gte: new Date(req.query.date_start),
+			$lte: new Date(req.query.date_end),
 		};
 	}
 	if (req.query.sort) {
@@ -72,7 +58,6 @@ router.get('/workouts/me', auth, async (req, res) => {
 // get specific workout
 router.get('/workouts/me/:workoutId', auth, async (req, res) => {
 	try {
-		// console.log(req.params);
 		const workout = await Workout.findOne({
 			_id: req.params.workoutId,
 			owner: req.user._id,
@@ -106,7 +91,6 @@ const upload = multer({
 	},
 });
 
-// DATE
 // create user workout
 router.post('/workouts', auth, upload.single('image'), async (req, res) => {
 	try {
@@ -129,7 +113,6 @@ router.post('/workouts', auth, upload.single('image'), async (req, res) => {
 	}
 });
 
-// DATE
 //upate user workout
 router.patch('/workouts/me/:workoutId', auth, async (req, res) => {
 	try {
@@ -216,8 +199,6 @@ router.patch(
 	upload.single('image'),
 	async (req, res) => {
 		try {
-			// console.log(req.file);
-			// console.log(req.params.workoutId);
 			const buffer = await sharp(req.file.buffer)
 				.resize({ width: 300, height: 300 })
 				.jpeg()
@@ -273,8 +254,8 @@ router.get('/workouts/contributions/me', auth, async (req, res) => {
 	try {
 		if (req.query.date_start && req.query.date_end) {
 			match.date = {
-				$gte: new Date(date_start),
-				$lte: new Date(date_end),
+				$gte: new Date(req.query.date_start),
+				$lte: new Date(req.query.date_end),
 			};
 		}
 		user = await user.populate({

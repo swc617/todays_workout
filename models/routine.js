@@ -11,6 +11,10 @@ const routineSchema = new Schema({
 	reps: {
 		type: Number,
 	},
+	weight: {
+		type: Number,
+		default: 0,
+	},
 });
 
 const Routine = model('Routine', routineSchema);

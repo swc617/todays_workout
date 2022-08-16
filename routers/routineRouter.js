@@ -4,21 +4,6 @@ const Workout = require('../models/workouts');
 const Routine = require('../models/routine');
 const auth = require('../middleware/auth');
 
-// TEST purpose - get all routines not specific to user
-router.get('/allroutines', async (req, res) => {
-	try {
-		const workouts = await Workout.find({}, 'exercises');
-		var allRoutines = [];
-		workouts.forEach((workout) => {
-			allRoutines = allRoutines.concat(workout.exercises);
-		});
-		res.send(allRoutines);
-	} catch (e) {
-		console.log(e);
-		res.status(404).send();
-	}
-});
-
 // get specific exercise
 router.get('/routines/:workoutId/:routineId', auth, async (req, res) => {
 	try {
@@ -60,7 +45,7 @@ router.post('/routines/:workoutId', auth, async (req, res) => {
 //upate user workout
 router.patch('/routines/:workoutId/:routineId', auth, async (req, res) => {
 	try {
-		const updateKeys = ['name', 'sets', 'reps'];
+		const updateKeys = ['name', 'sets', 'reps', 'weight'];
 		const isValid = Object.keys(req.body).every((key) =>
 			updateKeys.includes(key)
 		);
@@ -80,11 +65,11 @@ router.patch('/routines/:workoutId/:routineId', auth, async (req, res) => {
 					'exercises.$.name': req.body.name,
 					'exercises.$.sets': req.body.sets,
 					'exercises.$.reps': req.body.reps,
+					'exercises.$.reps': req.body.weight,
 				},
-			},
-			{ returnDocument: 'after' }
+			}
 		);
-		res.send(workout);
+		res.send('routine updated');
 	} catch (e) {
 		console.log(e);
 		res.status(500).send();
@@ -103,7 +88,7 @@ router.delete('/routines/:workoutId', auth, async (req, res) => {
 				$set: { exercises: [] },
 			}
 		);
-		res.send(workout);
+		res.send('all routine deleted');
 	} catch (e) {
 		console.log(e);
 		res.status(500).send();

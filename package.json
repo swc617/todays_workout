@@ -7,11 +7,15 @@
 		"test": "",
 		"dev": "env-cmd -f ./config/.env nodemon app.js"
 	},
+	"jest": {
+		"testEnvironment": "node"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"nodemon": "^2.0.19"
+		"nodemon": "^2.0.19",
+		"supertest": "^6.2.4"
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.1",

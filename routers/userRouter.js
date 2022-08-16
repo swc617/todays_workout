@@ -4,16 +4,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const auth = require('../middleware/auth');
 
-// TEST purpose - get all users
-router.get('/users', async (req, res) => {
-	try {
-		const users = await User.find({});
-		res.send(users);
-	} catch (e) {
-		res.send(e);
-	}
-});
-
 // create new user
 router.post('/users/register', async (req, res) => {
 	try {
@@ -35,7 +25,6 @@ router.post('/users/login', async (req, res) => {
 			req.body.password
 		);
 		const token = await user.generateToken(user._id, user.email);
-		// res.send({ user, token });
 		res.send(user);
 	} catch (e) {
 		res.status(401).send();

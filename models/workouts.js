@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 const Routine = require('./routine');
-// const , User } = require('./user');
 
 const dateDict = {
 	0: 'SUN',
