@@ -20,15 +20,15 @@ npm run dev
 ## postman
 [사용링크](https://www.postman.com/material-cosmonaut-91512792/workspace/todays-workout/collection/21982422-9df9d40e-2f7e-4f74-9b50-7e27ecf48645?ctx=documentation)
 
-몇가지 예시 및 방법)
-User
+## 몇가지 예시 및 방법
+### User
 1. Create User - 유저 생성을 먼저 한다
 <img width="1322" alt="Screen Shot 2022-09-29 at 2 34 15 PM" src="https://user-images.githubusercontent.com/40656716/192947084-f3ae9d6f-1504-4081-ab7c-aaddcd15e752.png">
 
 2. Login User - 계정 생성 후 로그인
 <img width="1287" alt="Screen Shot 2022-09-29 at 2 34 37 PM" src="https://user-images.githubusercontent.com/40656716/192947125-55bad1e6-5af5-476a-b731-f5268a2d3973.png">
 
-Workouts
+### Workouts
 1. Create Workout - 오늘 일지 생성; 이미지 업로드 필수 
 <img width="1304" alt="Screen Shot 2022-09-29 at 2 33 44 PM" src="https://user-images.githubusercontent.com/40656716/192947004-b38de40f-1f5f-401d-8444-86d0cbbfdea1.png">
 2. Read User Workouts
@@ -40,7 +40,7 @@ Workouts
 5. Read Today's Image from Workout
 <img width="1295" alt="Screen Shot 2022-09-29 at 2 39 15 PM" src="https://user-images.githubusercontent.com/40656716/192947768-22527bd8-8140-493b-bf5c-553bd768908e.png">
 
-Routines
+### Routines
 1. Create Routine into Workout by id - 오늘의 운동 일지의 루틴 생성
 <img width="1291" alt="Screen Shot 2022-09-29 at 2 45 06 PM" src="https://user-images.githubusercontent.com/40656716/192948852-6d6a61c9-0369-4b67-afb0-dfee2c023c09.png">
 2. Update User's Routine
