@@ -7,6 +7,10 @@ MongoDB, ExpressJS 스택
 * JWT로 사용자 로그인
 * 그날 한 운동(Workout)과 세부적인 루틴(Routine)을 기록하고 이미지 업로드
 
+requirements
+* mongodb
+* postman
+
 ```console
 npm install
 brew services start mongodb-community@6.0
